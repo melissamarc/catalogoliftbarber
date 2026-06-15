@@ -3,6 +3,7 @@ import { buscarProdutos } from "../services/produtoService";
 import ProductCard from "../components/ProductCard";
 import CategoryFilter from "../components/CategoryFilter";
 import Cart from "../components/Cart";
+import logo from "../assets/logo.png";
 
 function Catalogo() {
   const [produtos, setProdutos] = useState([]);
@@ -103,10 +104,10 @@ function Catalogo() {
     0
   );
 const vendedores = [
-  { nome: "Paulo", telefone: "5511999999999" },
-  { nome: "Marcos", telefone: "5511945913687" },
-  { nome: "Cadu", telefone: "5511999999999" },
-  { nome: "João", telefone: "5511999999999" },
+  { nome: "Paulo", telefone: "5511985753791" },
+  { nome: "Marcos", telefone: "5511980488753" },
+  { nome: "Cadu", telefone: "5511979819639" },
+  { nome: "João", telefone: "5511993430573" },
 ];
 
 const [vendedorSelecionado, setVendedorSelecionado] = useState(vendedores[0]);
@@ -121,9 +122,7 @@ const [vendedorSelecionado, setVendedorSelecionado] = useState(vendedores[0]);
     })
     .join("\n");
 
- const mensagemWhatsapp = `Olá! Gostaria de fazer esse pedido:
-
-Vendedor: ${vendedorSelecionado.nome}
+ const mensagemWhatsapp = `Olá, ${vendedorSelecionado.nome}! Gostaria de fazer esse pedido:
 
 ${itensMensagem}
 
@@ -136,15 +135,22 @@ Total: R$ ${total.toFixed(2).replace(".", ",")}`;
   return (
     <main>
       <header className="cabecalho">
-        <h1> Catálogo Lift Barber</h1>
+  <div className="logo-area">
+    <img src={logo} alt="Lift Barber" className="logo" />
 
-        <button
-          className="icone-carrinho"
-          onClick={() => setCarrinhoAberto(true)}
-        >
-          🛒 {quantidadeItensCarrinho}
-        </button>
-      </header>
+    <div>
+      <h1>Lift Barber</h1>
+      <span>Catálogo Oficial</span>
+    </div>
+  </div>
+
+  <button
+    className="icone-carrinho"
+    onClick={() => setCarrinhoAberto(true)}
+  >
+    🛒 {quantidadeItensCarrinho}
+  </button>
+</header>
 
       <input
         type="text"
