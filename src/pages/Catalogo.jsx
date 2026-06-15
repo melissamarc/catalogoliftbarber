@@ -126,7 +126,7 @@ function Catalogo() {
   return (
     <main>
       <header className="cabecalho">
-        <h1>Catálogo Digital</h1>
+        <h1> Catálogo Lift Barber</h1>
 
         <button
           className="icone-carrinho"

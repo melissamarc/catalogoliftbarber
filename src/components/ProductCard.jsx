@@ -1,12 +1,22 @@
 function ProductCard({ produto, adicionarAoCarrinho }) {
+  const imagemProduto = produto.imagem_url || "/sem-imagem.png";
+
   return (
     <div className={`card-produto ${produto.esgotado ? "esgotado" : ""}`}>
-      <img src={produto.imagem} alt={produto.nome} />
+      <div className="imagem-produto">
+        <img
+          src={imagemProduto}
+          alt={produto.nome}
+          onError={(e) => {
+            e.target.src = "/sem-imagem.png";
+          }}
+        />
+      </div>
 
       {produto.esgotado && <span className="selo">Esgotado</span>}
 
       <h2>{produto.nome}</h2>
-      <p>R$ {produto.preco.toFixed(2).replace(".", ",")}</p>
+      <p>R$ {Number(produto.preco).toFixed(2).replace(".", ",")}</p>
 
       <button
         disabled={produto.esgotado}
