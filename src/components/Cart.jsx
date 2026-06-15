@@ -6,10 +6,34 @@ function Cart({
   limparCarrinho,
   total,
   linkWhatsapp,
+  vendedores,
+  vendedorSelecionado,
+  setVendedorSelecionado,
 }) {
   return (
     <section className="carrinho">
       <h2>Carrinho</h2>
+
+      <div className="seletor-vendedor">
+  <label>Escolha o vendedor</label>
+
+  <select
+    value={vendedorSelecionado.nome}
+    onChange={(e) => {
+      const vendedor = vendedores.find(
+        (item) => item.nome === e.target.value
+      );
+
+      setVendedorSelecionado(vendedor);
+    }}
+  >
+    {vendedores.map((vendedor) => (
+      <option key={vendedor.nome} value={vendedor.nome}>
+        {vendedor.nome}
+      </option>
+    ))}
+  </select>
+</div>
 
       {carrinho.length === 0 ? (
         <p>Seu carrinho está vazio.</p>

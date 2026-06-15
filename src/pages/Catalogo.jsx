@@ -102,8 +102,14 @@ function Catalogo() {
     (total, item) => total + item.quantidade,
     0
   );
+const vendedores = [
+  { nome: "Paulo", telefone: "5511999999999" },
+  { nome: "Marcos", telefone: "5511945913687" },
+  { nome: "Cadu", telefone: "5511999999999" },
+  { nome: "João", telefone: "5511999999999" },
+];
 
-  const numeroVendedor = "5511981275128";
+const [vendedorSelecionado, setVendedorSelecionado] = useState(vendedores[0]);
 
   const itensMensagem = carrinho
     .map((item) => {
@@ -115,13 +121,17 @@ function Catalogo() {
     })
     .join("\n");
 
-  const mensagemWhatsapp = `Olá! Gostaria de fazer esse pedido:\n\n${itensMensagem}\n\nTotal: R$ ${total
-    .toFixed(2)
-    .replace(".", ",")}`;
+ const mensagemWhatsapp = `Olá! Gostaria de fazer esse pedido:
 
-  const linkWhatsapp = `https://wa.me/${numeroVendedor}?text=${encodeURIComponent(
-    mensagemWhatsapp
-  )}`;
+Vendedor: ${vendedorSelecionado.nome}
+
+${itensMensagem}
+
+Total: R$ ${total.toFixed(2).replace(".", ",")}`;
+
+ const linkWhatsapp = `https://wa.me/${vendedorSelecionado.telefone}?text=${encodeURIComponent(
+  mensagemWhatsapp
+)}`;
 
   return (
     <main>
@@ -176,15 +186,19 @@ function Catalogo() {
               ×
             </button>
 
-            <Cart
-              carrinho={carrinho}
-              aumentarQuantidade={aumentarQuantidade}
-              diminuirQuantidade={diminuirQuantidade}
-              removerDoCarrinho={removerDoCarrinho}
-              limparCarrinho={limparCarrinho}
-              total={total}
-              linkWhatsapp={linkWhatsapp}
-            />
+           <Cart
+  carrinho={carrinho}
+  aumentarQuantidade={aumentarQuantidade}
+  diminuirQuantidade={diminuirQuantidade}
+  removerDoCarrinho={removerDoCarrinho}
+  limparCarrinho={limparCarrinho}
+  total={total}
+  linkWhatsapp={linkWhatsapp}
+  vendedores={vendedores}
+  vendedorSelecionado={vendedorSelecionado}
+  setVendedorSelecionado={setVendedorSelecionado}
+/>
+
           </div>
         </div>
       )}
