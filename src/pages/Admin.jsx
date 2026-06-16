@@ -12,6 +12,7 @@ function Admin() {
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [categoria, setCategoria] = useState("");
+  const [marca, setMarca] = useState("");
   const [imagem, setImagem] = useState(null);
   const [esgotado, setEsgotado] = useState(false);
   const [carregando, setCarregando] = useState(false);
@@ -39,6 +40,7 @@ function Admin() {
       nome,
       preco: Number(preco),
       categoria,
+      marca,
       imagem_url: imagemUrl,
       esgotado,
       ativo: true,
@@ -52,6 +54,7 @@ function Admin() {
       setNome("");
       setPreco("");
       setCategoria("");
+      setMarca("");
       setImagem(null);
       setEsgotado(false);
 
@@ -97,43 +100,43 @@ function Admin() {
 
   const totalProdutos = produtos.length;
 
-const produtosDisponiveis = produtos.filter(
-  (produto) => !produto.esgotado
-).length;
+  const produtosDisponiveis = produtos.filter(
+    (produto) => !produto.esgotado
+  ).length;
 
-const produtosEsgotados = produtos.filter(
-  (produto) => produto.esgotado
-).length;
+  const produtosEsgotados = produtos.filter(
+    (produto) => produto.esgotado
+  ).length;
 
-const totalCategorias = new Set(
-  produtos.map((produto) => produto.categoria)
-).size;
+  const totalCategorias = new Set(
+    produtos.map((produto) => produto.categoria).filter(Boolean)
+  ).size;
 
   return (
     <div className="admin">
       <h1>Painel Administrativo</h1>
 
-<section className="dashboard-admin">
-  <div>
-    <strong>{totalProdutos}</strong>
-    <span>Produtos</span>
-  </div>
+      <section className="dashboard-admin">
+        <div>
+          <strong>{totalProdutos}</strong>
+          <span>Produtos</span>
+        </div>
 
-  <div>
-    <strong>{produtosDisponiveis}</strong>
-    <span>Disponíveis</span>
-  </div>
+        <div>
+          <strong>{produtosDisponiveis}</strong>
+          <span>Disponíveis</span>
+        </div>
 
-  <div>
-    <strong>{produtosEsgotados}</strong>
-    <span>Esgotados</span>
-  </div>
+        <div>
+          <strong>{produtosEsgotados}</strong>
+          <span>Esgotados</span>
+        </div>
 
-  <div>
-    <strong>{totalCategorias}</strong>
-    <span>Categorias</span>
-  </div>
-</section>
+        <div>
+          <strong>{totalCategorias}</strong>
+          <span>Categorias</span>
+        </div>
+      </section>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -159,6 +162,13 @@ const totalCategorias = new Set(
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
           required
+        />
+
+        <input
+          type="text"
+          placeholder="Marca"
+          value={marca}
+          onChange={(e) => setMarca(e.target.value)}
         />
 
         <input
@@ -191,7 +201,8 @@ const totalCategorias = new Set(
             <div>
               <strong>{produto.nome}</strong>
               <p>R$ {Number(produto.preco).toFixed(2).replace(".", ",")}</p>
-              <p>{produto.categoria}</p>
+              <p>Categoria: {produto.categoria}</p>
+              <p>Marca: {produto.marca || "Sem marca"}</p>
               <p>{produto.esgotado ? "Esgotado" : "Disponível"}</p>
             </div>
 
@@ -200,9 +211,7 @@ const totalCategorias = new Set(
                 {produto.esgotado ? "Marcar disponível" : "Marcar esgotado"}
               </button>
 
-              <button onClick={() => editarPreco(produto)}>
-                Editar preço
-              </button>
+              <button onClick={() => editarPreco(produto)}>Editar preço</button>
 
               <button onClick={() => removerProduto(produto)}>
                 Excluir produto
