@@ -666,3 +666,43 @@ main {
     height: 240px;
   }
 }
+.categorias {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+}
+
+.categorias button {
+  flex: 0 0 auto;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--card);
+  color: var(--texto);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.categorias button.ativa {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+  color: white;
+}
+
+@media (max-width: 750px) {
+  .categorias {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .categorias button {
+    flex: 0 0 auto;
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+}
