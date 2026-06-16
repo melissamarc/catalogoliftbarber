@@ -18,6 +18,14 @@ function Admin() {
   const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
+    document.body.classList.add("tema-claro");
+
+    return () => {
+      document.body.classList.remove("tema-claro");
+    };
+  }, []);
+
+  useEffect(() => {
     carregarProdutos();
   }, []);
 
@@ -75,7 +83,9 @@ function Admin() {
   }
 
   async function removerProduto(produto) {
-    const confirmar = confirm(`Tem certeza que deseja excluir "${produto.nome}"?`);
+    const confirmar = confirm(
+      `Tem certeza que deseja excluir "${produto.nome}"?`
+    );
 
     if (!confirmar) return;
 
@@ -113,8 +123,13 @@ function Admin() {
   ).size;
 
   return (
-    <div className="admin">
-      <h1>Painel Administrativo</h1>
+    <div className="admin admin-compacto">
+      <header className="admin-header">
+        <div>
+          <h1>Painel Admin</h1>
+          <p>Gerencie produtos, preços e disponibilidade.</p>
+        </div>
+      </header>
 
       <section className="dashboard-admin">
         <div>
@@ -138,88 +153,112 @@ function Admin() {
         </div>
       </section>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nome do produto"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
+      <section className="admin-card">
+        <h2>Novo produto</h2>
 
-        <input
-          type="number"
-          step="0.01"
-          placeholder="Preço"
-          value={preco}
-          onChange={(e) => setPreco(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Categoria"
-          value={categoria}
-          onChange={(e) => setCategoria(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Marca"
-          value={marca}
-          onChange={(e) => setMarca(e.target.value)}
-        />
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImagem(e.target.files[0])}
-        />
-
-        <label>
+        <form onSubmit={handleSubmit} className="form-admin">
           <input
-            type="checkbox"
-            checked={esgotado}
-            onChange={(e) => setEsgotado(e.target.checked)}
+            type="text"
+            placeholder="Produto"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
           />
-          Produto esgotado
-        </label>
 
-        <button type="submit" disabled={carregando}>
-          {carregando ? "Salvando..." : "Salvar Produto"}
-        </button>
-      </form>
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Preço"
+            value={preco}
+            onChange={(e) => setPreco(e.target.value)}
+            required
+          />
 
-      <h2>Produtos cadastrados</h2>
+          <input
+            type="text"
+            placeholder="Categoria"
+            value={categoria}
+            onChange={(e) => setCategoria(e.target.value)}
+            required
+          />
 
-      <div className="lista-admin">
-        {produtos.map((produto) => (
-          <div className="produto-admin" key={produto.id}>
-            <img src={produto.imagem_url} alt={produto.nome} />
+          <input
+            type="text"
+            placeholder="Marca"
+            value={marca}
+            onChange={(e) => setMarca(e.target.value)}
+          />
 
-            <div>
-              <strong>{produto.nome}</strong>
-              <p>R$ {Number(produto.preco).toFixed(2).replace(".", ",")}</p>
-              <p>Categoria: {produto.categoria}</p>
-              <p>Marca: {produto.marca || "Sem marca"}</p>
-              <p>{produto.esgotado ? "Esgotado" : "Disponível"}</p>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImagem(e.target.files[0])}
+          />
+
+          <label className="checkbox-admin">
+            <input
+              type="checkbox"
+              checked={esgotado}
+              onChange={(e) => setEsgotado(e.target.checked)}
+            />
+            Produto esgotado
+          </label>
+
+          <button type="submit" disabled={carregando}>
+            {carregando ? "Salvando..." : "Salvar produto"}
+          </button>
+        </form>
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-lista-topo">
+          <h2>Produtos cadastrados</h2>
+          <span>{produtos.length} itens</span>
+        </div>
+
+        <div className="lista-admin">
+          {produtos.map((produto) => (
+            <div className="produto-admin" key={produto.id}>
+              <img src={produto.imagem_url} alt={produto.nome} />
+
+              <div className="info-produto-admin">
+                <strong>{produto.nome}</strong>
+
+                <div className="meta-produto-admin">
+                  <span>
+                    R$ {Number(produto.preco).toFixed(2).replace(".", ",")}
+                  </span>
+                  <span>{produto.categoria}</span>
+                  <span>{produto.marca || "Sem marca"}</span>
+                </div>
+
+                <small
+                  className={
+                    produto.esgotado ? "status esgotado" : "status disponivel"
+                  }
+                >
+                  {produto.esgotado ? "Esgotado" : "Disponível"}
+                </small>
+              </div>
+
+              <div className="acoes-admin">
+                <button onClick={() => alternarEsgotado(produto)}>
+                  {produto.esgotado ? "Disponível" : "Esgotar"}
+                </button>
+
+                <button onClick={() => editarPreco(produto)}>Preço</button>
+
+                <button
+                  className="perigo"
+                  onClick={() => removerProduto(produto)}
+                >
+                  Excluir
+                </button>
+              </div>
             </div>
-
-            <div className="acoes-admin">
-              <button onClick={() => alternarEsgotado(produto)}>
-                {produto.esgotado ? "Marcar disponível" : "Marcar esgotado"}
-              </button>
-
-              <button onClick={() => editarPreco(produto)}>Editar preço</button>
-
-              <button onClick={() => removerProduto(produto)}>
-                Excluir produto
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

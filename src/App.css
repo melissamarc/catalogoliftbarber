@@ -34,6 +34,8 @@ body {
   color: var(--texto);
 }
 
+/* CATÁLOGO */
+
 main {
   width: 100%;
   max-width: 1180px;
@@ -41,10 +43,7 @@ main {
   padding: 28px 16px;
 }
 
-/* CATÁLOGO */
-
-.cabecalho,
-.admin-header {
+.cabecalho {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,21 +64,17 @@ main {
   object-fit: contain;
 }
 
-.logo-area h1,
-.admin-header h1 {
+.logo-area h1 {
   margin: 0;
   color: var(--texto);
   font-size: 26px;
   font-weight: 900;
-  letter-spacing: -1px;
 }
 
-.logo-area span,
-.admin-header p {
+.logo-area span {
   color: var(--texto-suave);
   font-size: 13px;
   font-weight: 700;
-  margin: 4px 0 0;
 }
 
 .acoes-header {
@@ -360,142 +355,193 @@ main {
   font-weight: 900;
 }
 
-/* ADMIN */
+/* ADMIN SEMPRE CLARO */
 
 .admin {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 28px 16px;
+  padding: 30px 18px;
+  background: #f5f6f8;
+  color: #111;
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  color: #111;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.admin-header p {
+  margin: 6px 0 0;
+  color: #666;
+  font-weight: 700;
 }
 
 .dashboard-admin {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
-.dashboard-admin div,
-.admin-card {
-  background: var(--card);
-  border: 1px solid var(--borda);
+.dashboard-admin div {
+  background: white;
+  border: 1px solid #e5e7eb;
   border-radius: 18px;
-  padding: 16px;
+  padding: 18px;
 }
 
 .dashboard-admin strong {
   display: block;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
-  color: var(--vermelho);
+  color: #d71920;
 }
 
 .dashboard-admin span {
-  color: var(--texto-suave);
+  color: #666;
   font-weight: 800;
 }
 
 .admin-card {
-  margin-bottom: 18px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
 .admin-card h2 {
-  margin: 0 0 14px;
-  font-size: 18px;
+  margin: 0 0 16px;
+  font-size: 20px;
+  color: #111;
   font-weight: 900;
 }
 
 .form-admin {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 10px;
+  gap: 14px;
 }
 
-.form-admin input,
-.form-admin button {
+.form-admin input {
+  width: 100%;
   min-width: 0;
-  padding: 13px;
-  border-radius: 12px;
-  border: 1px solid var(--borda);
-  background: var(--card2);
-  color: var(--texto);
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: 1px solid #d9dce3;
+  background: #f9fafb;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+}
+
+.form-admin input:focus {
+  border-color: #1f6feb;
+  background: white;
+}
+
+.form-admin input[type="file"] {
+  grid-column: span 2;
+  background: white;
+}
+
+.checkbox-admin {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #444;
   font-weight: 800;
 }
 
+.checkbox-admin input {
+  width: auto;
+}
+
 .form-admin button {
-  grid-column: span 2;
-  background: var(--azul);
+  grid-column: 1 / -1;
+  border: none;
+  background: #1f6feb;
   color: white;
+  padding: 15px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 900;
   cursor: pointer;
 }
 
-.form-admin input[type="file"],
-.checkbox-admin {
-  grid-column: span 2;
-}
-
-.checkbox-admin {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--texto-suave);
-  font-weight: 800;
+.form-admin button:hover {
+  background: #d71920;
 }
 
 .admin-lista-topo {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 }
 
 .admin-lista-topo span {
-  color: var(--texto-suave);
+  color: #666;
   font-weight: 800;
 }
 
 .lista-admin {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
 }
 
 .produto-admin {
-  background: var(--card);
-  border: 1px solid var(--borda);
-  border-radius: 18px;
-  padding: 12px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
 }
 
 .produto-admin img {
   width: 100%;
-  height: 150px;
+  height: 220px;
   object-fit: contain;
-  border-radius: 14px;
-  background: #f4f4f4;
-  margin-bottom: 12px;
+  border-radius: 18px;
+  background: #f3f4f6;
+  padding: 10px;
+  margin-bottom: 14px;
 }
 
 .info-produto-admin strong {
   display: block;
-  font-size: 14px;
-  color: var(--texto);
+  font-size: 15px;
+  color: #111;
   font-weight: 900;
-  min-height: 34px;
+  min-height: 38px;
 }
 
 .meta-produto-admin {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 7px;
+  margin-top: 10px;
 }
 
 .meta-produto-admin span {
-  background: var(--card2);
-  color: var(--texto-suave);
-  padding: 4px 8px;
+  background: #f1f3f5;
+  color: #555;
+  padding: 5px 9px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 800;
@@ -503,17 +549,17 @@ main {
 
 .status {
   display: inline-block;
-  margin: 8px 0;
-  font-size: 11px;
+  margin: 10px 0;
+  font-size: 12px;
   font-weight: 900;
 }
 
 .status.disponivel {
-  color: #25d366;
+  color: #16a34a;
 }
 
 .status.esgotado {
-  color: var(--vermelho);
+  color: #d71920;
 }
 
 .acoes-admin {
@@ -525,19 +571,21 @@ main {
 
 .acoes-admin button {
   border: none;
-  background: var(--azul);
+  background: #1f6feb;
   color: white;
-  padding: 9px;
+  padding: 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .acoes-admin .perigo {
-  background: var(--vermelho);
+  background: #d71920;
   grid-column: 1 / -1;
 }
+
+/* FEEDBACK */
 
 .toast {
   position: fixed;
@@ -552,6 +600,8 @@ main {
   border-radius: 14px;
   font-weight: 900;
 }
+
+/* MOBILE */
 
 @media (max-width: 750px) {
   main,
@@ -609,10 +659,10 @@ main {
   }
 
   .lista-admin {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .produto-admin img {
-    height: 120px;
+    height: 240px;
   }
 }
