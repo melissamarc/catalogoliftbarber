@@ -165,6 +165,25 @@ Total: R$ ${total.toFixed(2).replace(".", ",")}`;
     vendedorSelecionado.telefone
   }?text=${encodeURIComponent(mensagemWhatsapp)}`;
 
+  const [temaEscuro, setTemaEscuro] = useState(() => {
+  const temaSalvo = localStorage.getItem("tema");
+
+  if (temaSalvo) {
+    return temaSalvo === "escuro";
+  }
+
+  return true;
+});
+
+useEffect(() => {
+  document.body.classList.toggle("tema-claro", !temaEscuro);
+
+  localStorage.setItem(
+    "tema",
+    temaEscuro ? "escuro" : "claro"
+  );
+}, [temaEscuro]);
+
   return (
     <main>
       {mensagemToast && <div className="toast">{mensagemToast}</div>}
@@ -179,12 +198,22 @@ Total: R$ ${total.toFixed(2).replace(".", ",")}`;
           </div>
         </div>
 
-        <button
-          className="icone-carrinho"
-          onClick={() => setCarrinhoAberto(true)}
-        >
-          🛒 {quantidadeItensCarrinho}
-        </button>
+       <div className="acoes-header">
+  <button
+    className="botao-tema"
+    onClick={() => setTemaEscuro(!temaEscuro)}
+  >
+    {temaEscuro ? "☀️" : "🌙"}
+  </button>
+
+  <button
+    className="icone-carrinho"
+    onClick={() => setCarrinhoAberto(true)}
+  >
+    🛒 {quantidadeItensCarrinho}
+  </button>
+</div>
+
       </header>
 
       <input
