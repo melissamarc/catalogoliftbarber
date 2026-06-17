@@ -723,3 +723,42 @@ main {
   background: rgba(255,255,255,0.08);
   border-radius: 18px;
 }
+
+.preview-imagem-admin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.preview-imagem-admin img {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  background: white;
+  border-radius: 12px;
+}
+
+.preview-imagem-admin span {
+  font-size: 13px;
+  font-weight: 800;
+  color: #666;
+}
+
+.botao-cancelar-edicao {
+  border: none;
+  background: #eeeeee;
+  color: #111;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.botao-cancelar-edicao:hover {
+  background: #ddd;
+}

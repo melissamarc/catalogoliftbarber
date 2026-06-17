@@ -9,11 +9,15 @@ import {
 
 function Admin() {
   const [produtos, setProdutos] = useState([]);
+
+  const [produtoEditando, setProdutoEditando] = useState(null);
+
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
   const [categoria, setCategoria] = useState("");
   const [marca, setMarca] = useState("");
   const [imagem, setImagem] = useState(null);
+  const [imagemAtual, setImagemAtual] = useState("");
   const [esgotado, setEsgotado] = useState(false);
   const [carregando, setCarregando] = useState(false);
 
@@ -34,17 +38,42 @@ function Admin() {
     setProdutos(dados);
   }
 
+  function limparFormulario() {
+    setProdutoEditando(null);
+    setNome("");
+    setPreco("");
+    setCategoria("");
+    setMarca("");
+    setImagem(null);
+    setImagemAtual("");
+    setEsgotado(false);
+  }
+
+  function iniciarEdicao(produto) {
+    setProdutoEditando(produto);
+
+    setNome(produto.nome || "");
+    setPreco(produto.preco || "");
+    setCategoria(produto.categoria || "");
+    setMarca(produto.marca || "");
+    setImagem(null);
+    setImagemAtual(produto.imagem_url || "");
+    setEsgotado(Boolean(produto.esgotado));
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setCarregando(true);
 
-    let imagemUrl = null;
+    let imagemUrl = imagemAtual || null;
 
     if (imagem) {
       imagemUrl = await enviarImagem(imagem);
     }
 
-    const produto = {
+    const dadosProduto = {
       nome,
       preco: Number(preco),
       categoria,
@@ -54,21 +83,25 @@ function Admin() {
       ativo: true,
     };
 
-    const produtoCadastrado = await cadastrarProduto(produto);
+    let resultado = null;
 
-    if (produtoCadastrado) {
-      alert("Produto cadastrado com sucesso!");
+    if (produtoEditando) {
+      resultado = await atualizarProduto(produtoEditando.id, dadosProduto);
+    } else {
+      resultado = await cadastrarProduto(dadosProduto);
+    }
 
-      setNome("");
-      setPreco("");
-      setCategoria("");
-      setMarca("");
-      setImagem(null);
-      setEsgotado(false);
+    if (resultado) {
+      alert(
+        produtoEditando
+          ? "Produto atualizado com sucesso!"
+          : "Produto cadastrado com sucesso!"
+      );
 
+      limparFormulario();
       carregarProdutos();
     } else {
-      alert("Erro ao cadastrar produto");
+      alert("Erro ao salvar produto");
     }
 
     setCarregando(false);
@@ -92,20 +125,12 @@ function Admin() {
     const excluiu = await excluirProduto(produto.id);
 
     if (excluiu) {
+      if (produtoEditando?.id === produto.id) {
+        limparFormulario();
+      }
+
       carregarProdutos();
     }
-  }
-
-  async function editarPreco(produto) {
-    const novoPreco = prompt("Novo preço:", produto.preco);
-
-    if (!novoPreco) return;
-
-    await atualizarProduto(produto.id, {
-      preco: Number(novoPreco),
-    });
-
-    carregarProdutos();
   }
 
   const totalProdutos = produtos.length;
@@ -127,7 +152,7 @@ function Admin() {
       <header className="admin-header">
         <div>
           <h1>Painel Admin</h1>
-          <p>Gerencie produtos, preços e disponibilidade.</p>
+          <p>Gerencie produtos, preços, imagens, marcas e disponibilidade.</p>
         </div>
       </header>
 
@@ -154,7 +179,26 @@ function Admin() {
       </section>
 
       <section className="admin-card">
-        <h2>Novo produto</h2>
+        <div className="admin-lista-topo">
+          <h2>{produtoEditando ? "Editar produto" : "Novo produto"}</h2>
+
+          {produtoEditando && (
+            <button
+              type="button"
+              className="botao-cancelar-edicao"
+              onClick={limparFormulario}
+            >
+              Cancelar edição
+            </button>
+          )}
+        </div>
+
+        {imagemAtual && (
+          <div className="preview-imagem-admin">
+            <img src={imagemAtual} alt="Imagem atual do produto" />
+            <span>Imagem atual</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="form-admin">
           <input
@@ -205,7 +249,11 @@ function Admin() {
           </label>
 
           <button type="submit" disabled={carregando}>
-            {carregando ? "Salvando..." : "Salvar produto"}
+            {carregando
+              ? "Salvando..."
+              : produtoEditando
+              ? "Salvar alterações"
+              : "Salvar produto"}
           </button>
         </form>
       </section>
@@ -242,11 +290,11 @@ function Admin() {
               </div>
 
               <div className="acoes-admin">
+                <button onClick={() => iniciarEdicao(produto)}>Editar</button>
+
                 <button onClick={() => alternarEsgotado(produto)}>
                   {produto.esgotado ? "Disponível" : "Esgotar"}
                 </button>
-
-                <button onClick={() => editarPreco(produto)}>Preço</button>
 
                 <button
                   className="perigo"
