@@ -85,45 +85,64 @@ function Catalogo() {
     }, 2200);
   }
 
-  function adicionarAoCarrinho(produto) {
-    const produtoExiste = carrinho.find((item) => item.id === produto.id);
+  function adicionarAoCarrinho(produto, variacoesSelecionadas = []) {
+  const variacaoKey = variacoesSelecionadas
+    .map((variacao) => variacao.id)
+    .sort()
+    .join("-");
 
-    if (produtoExiste) {
-      setCarrinho(
-        carrinho.map((item) =>
-          item.id === produto.id
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item
-        )
-      );
-    } else {
-      setCarrinho([...carrinho, { ...produto, quantidade: 1 }]);
-    }
+  const itemCarrinhoId = `${produto.id}-${variacaoKey || "sem-variacao"}`;
 
-    mostrarToast(`${produto.nome} foi adicionado ao carrinho`);
-  }
+  const produtoExiste = carrinho.find((item) => item.itemCarrinhoId === itemCarrinhoId);
 
-  function aumentarQuantidade(id) {
+  const produtoCarrinho = {
+    ...produto,
+    itemCarrinhoId,
+    variacoesSelecionadas,
+  };
+
+  if (produtoExiste) {
     setCarrinho(
       carrinho.map((item) =>
-        item.id === id ? { ...item, quantidade: item.quantidade + 1 } : item
+        item.itemCarrinhoId === itemCarrinhoId
+          ? { ...item, quantidade: item.quantidade + 1 }
+          : item
       )
     );
+  } else {
+    setCarrinho([...carrinho, { ...produtoCarrinho, quantidade: 1 }]);
   }
 
-  function diminuirQuantidade(id) {
-    setCarrinho(
-      carrinho
-        .map((item) =>
-          item.id === id ? { ...item, quantidade: item.quantidade - 1 } : item
-        )
-        .filter((item) => item.quantidade > 0)
-    );
-  }
+  mostrarToast(`${produto.nome} foi adicionado ao carrinho`);
+}
 
-  function removerDoCarrinho(id) {
-    setCarrinho(carrinho.filter((item) => item.id !== id));
-  }
+  function aumentarQuantidade(itemCarrinhoId) {
+  setCarrinho(
+    carrinho.map((item) =>
+      item.itemCarrinhoId === itemCarrinhoId
+        ? { ...item, quantidade: item.quantidade + 1 }
+        : item
+    )
+  );
+}
+
+function diminuirQuantidade(itemCarrinhoId) {
+  setCarrinho(
+    carrinho
+      .map((item) =>
+        item.itemCarrinhoId === itemCarrinhoId
+          ? { ...item, quantidade: item.quantidade - 1 }
+          : item
+      )
+      .filter((item) => item.quantidade > 0)
+  );
+}
+
+function removerDoCarrinho(itemCarrinhoId) {
+  setCarrinho(
+    carrinho.filter((item) => item.itemCarrinhoId !== itemCarrinhoId)
+  );
+}
 
   function limparCarrinho() {
     setCarrinho([]);
@@ -146,15 +165,22 @@ function Catalogo() {
   );
 
   const itensMensagem = carrinho
-    .map((item) => {
-      return `${item.quantidade}x ${item.nome} - R$ ${(
-        item.preco * item.quantidade
-      )
-        .toFixed(2)
-        .replace(".", ",")}`;
-    })
-    .join("\n");
+  .map((item) => {
+    const variacoesTexto = item.variacoesSelecionadas?.length
+      ? `\nVariações: ${item.variacoesSelecionadas
+          .map((variacao) => variacao.nome)
+          .join(", ")}`
+      : "";
 
+    return `${item.quantidade}x ${item.nome}${variacoesTexto} - R$ ${(
+      item.preco * item.quantidade
+    )
+      .toFixed(2)
+      .replace(".", ",")}`;
+  })
+  .join("\n\n");
+
+  
   const mensagemWhatsapp = `Olá, ${vendedorSelecionado.nome}! Gostaria de fazer esse pedido:
 
 ${itensMensagem}
