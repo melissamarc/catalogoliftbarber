@@ -32,6 +32,8 @@ function Admin() {
   const [variacaoImagem, setVariacaoImagem] = useState(null);
   const [carregandoVariacao, setCarregandoVariacao] = useState(false);
 
+  const [buscaProduto, setBuscaProduto] = useState("");
+
   useEffect(() => {
     document.body.classList.add("tema-claro");
 
@@ -238,6 +240,12 @@ function Admin() {
   const totalCategorias = new Set(
     produtos.map((produto) => produto.categoria).filter(Boolean)
   ).size;
+
+  const produtosFiltrados = produtos.filter((produto) =>
+  produto.nome.toLowerCase().includes(
+    buscaProduto.toLowerCase()
+  )
+);
 
   return (
     <div className="admin admin-compacto">
@@ -456,12 +464,19 @@ function Admin() {
       <section className="admin-card">
         <div className="admin-lista-topo">
           <h2>Produtos cadastrados</h2>
+          <input
+  type="text"
+  placeholder="Buscar produto..."
+  value={buscaProduto}
+  onChange={(e) => setBuscaProduto(e.target.value)}
+  className="campo-busca-admin"
+/>
           <span>{produtos.length} itens</span>
         </div>
 
         <div className="lista-admin">
-          {produtos.map((produto) => (
-            <div className="produto-admin" key={produto.id}>
+{produtosFiltrados.map((produto) => (
+              <div className="produto-admin" key={produto.id}>
               <img src={produto.imagem_url} alt={produto.nome} />
 
               <div className="info-produto-admin">
