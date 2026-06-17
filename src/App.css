@@ -168,52 +168,40 @@ main {
 }
 
 .card-produto {
-  position: relative;
-  background: var(--card);
-  border: 1px solid var(--borda);
-  border-radius: 24px;
-  height: 390px;
+  background: linear-gradient(180deg, #17171b 0%, #101014 100%);
+  border: 1px solid #2f3037;
+  border-radius: 22px;
+  height: 360px;
   padding: 10px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 .imagem-produto {
-  position: relative;
   width: 100%;
-  height: 230px;
-  min-height: 230px;
-  background: #f4f4f4;
-  border-radius: 20px;
-  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  min-height: 0;
+  background: #f7f7f7;
+  border-radius: 18px;
 }
 
 .imagem-produto img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  padding: 0;
+  object-fit: contain;
+  padding: 8px;
 }
 
+
 .conteudo-produto {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
   padding: 12px 4px 2px;
 }
 
-
 .card-produto h2 {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.15;
-  margin: 0 0 8px;
-  font-weight: 900;
-  color: var(--texto);
-  text-align: left;
-  min-height: 36px;
-  max-height: 36px;
-  overflow: hidden;
+  min-height: 34px;
+  max-height: 34px;
+  color: #f4f4f5;
 }
 
 .variacoes-produto,
@@ -1048,47 +1036,47 @@ main {
 }
 
 .rodape-produto p {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--vermelho);
-  text-align: left;
+  color: #ff2d35;
+  font-size: 17px;
+  letter-spacing: -0.5px;
 }
 
 .botao-sacola {
-  width: 48px;
-  height: 38px;
-  min-height: 38px;
-  border: none;
-  border-radius: 999px;
-  background: var(--azul);
-  color: white;
-  font-size: 15px;
-  font-weight: 900;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #ffffff;
+  color: #111;
+  width: 46px;
+  height: 36px;
+  min-height: 36px;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.08);
 }
 
 .botao-sacola:hover {
   background: var(--vermelho);
+  color: white;
 }
 
 .card-produto.esgotado .botao-sacola {
   background: #555;
   cursor: not-allowed;
 }
-
 @media (max-width: 750px) {
+  .card-produto {
+    height: 315px;
+  }
+
+  .imagem-produto {
+    aspect-ratio: 1 / 1;
+    height: auto;
+    min-height: 0;
+  }
+
   .rodape-produto p {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .botao-sacola {
-    width: 42px;
+    width: 40px;
     height: 34px;
     min-height: 34px;
-    font-size: 13px;
   }
 }
