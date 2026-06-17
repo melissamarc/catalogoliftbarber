@@ -171,6 +171,13 @@ main {
   padding: 12px;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+}
+
+.card-produto p,
+.variacoes-produto,
+.variacoes-texto-produto {
+  align-self: flex-start;
 }
 
 .imagem-produto {
@@ -194,13 +201,18 @@ main {
 
 .card-produto h2 {
   font-size: 14px;
-  line-height: 1.1;
+  line-height: 1.2;
   margin: 12px 0 8px;
   font-weight: 900;
   color: var(--texto);
-  min-height: 34px;
-  max-height: 34px;
-  overflow: hidden;
+
+  text-align: left;
+
+  min-height: 38px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .card-produto p {
@@ -884,11 +896,13 @@ main {
 }
 
 .bolinha-variacao {
-  width: 5px;
-  height: 5px;
-  border-radius: 100%;
-  border: 2px solid transparent;
-  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  padding: 0;
 }
 
 .bolinha-variacao.selecionada {
