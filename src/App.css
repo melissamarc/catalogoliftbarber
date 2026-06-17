@@ -896,11 +896,9 @@ main {
 }
 
 .bolinha-variacao {
-  width: 12px;
-  height: 12px;
-  min-width: 12px;
-  min-height: 12px;
-  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
   border: 1px solid #d1d5db;
   padding: 0;
 }
