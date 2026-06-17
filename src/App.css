@@ -6,7 +6,7 @@
   --card2: #1d1d22;
   --texto: #f5f5f5;
   --texto-suave: #a8a8a8;
-  --vermelho: #d71920;
+  --vermelho: #ff2d35;
   --azul: #1f6feb;
   --borda: #2a2a30;
 }
@@ -163,45 +163,61 @@ main {
 
 .grade-produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
 }
 
+/* PRODUCT CARD PREMIUM */
+
 .card-produto {
-  background: linear-gradient(180deg, #17171b 0%, #101014 100%);
-  border: 1px solid #2f3037;
-  border-radius: 22px;
-  height: 360px;
-  padding: 10px;
+  position: relative;
+  background: linear-gradient(180deg, #19191e 0%, #101014 100%);
+  border: 1px solid #2d2e35;
+  border-radius: 26px;
+  padding: 12px;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
 }
 
 .imagem-produto {
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  height: auto;
-  min-height: 0;
   background: #f7f7f7;
-  border-radius: 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .imagem-produto img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 8px;
+  padding: 10px;
 }
 
-
 .conteudo-produto {
-  padding: 12px 4px 2px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 14px 4px 2px;
 }
 
 .card-produto h2 {
+  margin: 0 0 8px;
   font-size: 14px;
   line-height: 1.15;
+  font-weight: 800;
+  color: #f7f7f7;
+  text-align: left;
   min-height: 34px;
   max-height: 34px;
-  color: #f4f4f5;
+  overflow: hidden;
 }
 
 .variacoes-produto,
@@ -210,7 +226,7 @@ main {
   display: flex;
   align-items: center;
   gap: 7px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
@@ -226,19 +242,21 @@ main {
 }
 
 .bolinha-variacao.selecionada {
-  border-color: var(--texto);
+  border-color: #ffffff;
   box-shadow: 0 0 0 2px var(--azul);
 }
-
 
 .variacoes-texto-produto button {
   width: auto;
   margin-top: 0;
   padding: 5px 9px;
   font-size: 10px;
+  border: none;
   border-radius: 999px;
-  background: var(--card2);
-  color: var(--texto);
+  background: #24242b;
+  color: #f5f5f5;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 .variacoes-texto-produto button.selecionada {
@@ -246,39 +264,56 @@ main {
   color: white;
 }
 
-.card-produto p {
+.rodape-produto {
   margin-top: auto;
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--vermelho);
-  text-align: left;
-  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.card-produto > button {
-  width: 100%;
-  min-height: 46px;
-  border: none;
-  background: var(--azul);
-  color: white;
-  padding: 10px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 11px;
+.rodape-produto p {
+  margin: 0;
+  color: var(--vermelho);
+  font-size: 18px;
   font-weight: 900;
+  letter-spacing: -0.6px;
+  text-align: left;
+}
+
+.botao-sacola {
+  width: 48px;
+  height: 38px;
+  min-height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: #f5f5f5;
+  color: #111;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.08);
+}
+
+.botao-sacola:hover {
+  background: var(--vermelho);
+  color: white;
 }
 
 .selo {
   position: absolute;
-  top: 22px;
-  left: 22px;
+  top: 12px;
+  left: 12px;
   background: var(--vermelho);
   color: white;
-  padding: 4px 8px;
+  padding: 5px 9px;
   border-radius: 999px;
   font-size: 9px;
   font-weight: 900;
+  z-index: 2;
 }
 
 .card-produto.esgotado {
@@ -295,8 +330,14 @@ main {
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
+  border-radius: 26px;
   pointer-events: none;
+}
+
+.card-produto.esgotado .botao-sacola {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
 }
 
 /* CARRINHO */
@@ -441,27 +482,28 @@ main {
 .admin {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 22px 14px;
+  padding: 28px 18px;
   background: #0b0b0d;
   color: #f5f5f5;
   min-height: 100vh;
 }
 
 .admin-header {
-  margin-bottom: 16px;
-  padding-bottom: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #2a2a30;
 }
 
 .admin-header h1 {
   margin: 0;
-  font-size: 24px;
   color: #f5f5f5;
+  font-size: 28px;
   font-weight: 900;
 }
 
 .admin-header p {
-  display: none;
+  color: #a8a8a8;
+  margin-top: 6px;
 }
 
 .dashboard-admin {
@@ -471,9 +513,15 @@ main {
   margin-bottom: 14px;
 }
 
-.dashboard-admin div {
+.dashboard-admin div,
+.admin-card {
   background: #151518;
   border: 1px solid #2a2a30;
+  color: #f5f5f5;
+  box-shadow: none;
+}
+
+.dashboard-admin div {
   border-radius: 14px;
   padding: 12px;
 }
@@ -492,17 +540,15 @@ main {
 }
 
 .admin-card {
-  background: #151518;
-  border: 1px solid #2a2a30;
   border-radius: 16px;
   padding: 14px;
   margin-bottom: 14px;
-  box-shadow: none;
 }
 
-.admin-card h2 {
-  font-size: 16px;
+.admin-card h2,
+.admin-lista-topo h2 {
   color: #f5f5f5;
+  font-size: 16px;
   margin: 0 0 10px;
   font-weight: 900;
 }
@@ -514,7 +560,9 @@ main {
   margin-bottom: 10px;
 }
 
-.admin-lista-topo span {
+.admin-lista-topo span,
+.subtitulo-admin,
+.texto-vazio-admin {
   color: #a8a8a8;
   font-size: 12px;
   font-weight: 800;
@@ -527,7 +575,8 @@ main {
 }
 
 .form-admin input,
-.form-variacao-admin select {
+.form-variacao-admin select,
+.campo-busca-admin {
   width: 100%;
   min-width: 0;
   padding: 11px 12px;
@@ -540,7 +589,13 @@ main {
   outline: none;
 }
 
+.form-admin input::placeholder,
+.campo-busca-admin::placeholder {
+  color: #8b8b93;
+}
+
 .form-admin input:focus,
+.form-variacao-admin select:focus,
 .campo-busca-admin:focus {
   background: #202027;
   border-color: #1f6feb;
@@ -581,21 +636,12 @@ main {
 }
 
 .campo-busca-admin {
-  width: 100%;
-  background: #1d1d22;
-  border: 1px solid #2a2a30;
-  color: #f5f5f5;
-  padding: 12px;
-  border-radius: 12px;
   margin: 10px 0 14px;
-  font-size: 13px;
-  font-weight: 700;
-  outline: none;
 }
 
 .lista-admin {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 12px;
 }
 
@@ -699,15 +745,13 @@ main {
   border-radius: 12px;
 }
 
-.preview-imagem-admin span,
-.subtitulo-admin,
-.texto-vazio-admin {
+.preview-imagem-admin span {
   color: #a8a8a8;
   font-weight: 800;
 }
 
 .botao-cancelar-edicao {
-  border: none;
+  border: 1px solid #2a2a30;
   background: #1d1d22;
   color: #f5f5f5;
   padding: 8px 12px;
@@ -842,16 +886,30 @@ main {
 
   .grade-produtos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
   .card-produto {
-    height: 360px;
-    padding: 10px;
+    min-height: 315px;
+    border-radius: 22px;
+    padding: 9px;
   }
 
-  .imagem-produto {
-    height: 130px;
-    min-height: 130px;
+  .card-produto h2 {
+    font-size: 13px;
+    min-height: 31px;
+    max-height: 31px;
+  }
+
+  .rodape-produto p {
+    font-size: 15px;
+  }
+
+  .botao-sacola {
+    width: 40px;
+    height: 34px;
+    min-height: 34px;
+    font-size: 13px;
   }
 
   .filtro-marcas {
@@ -891,192 +949,5 @@ main {
   .variacao-admin-item img {
     width: 100%;
     height: 120px;
-  }
-}
-
-/* ADMIN ESCURO BONITO - COLAR NO FINAL */
-
-.admin {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 28px 18px;
-  background: #0b0b0d !important;
-  color: #f5f5f5 !important;
-  min-height: 100vh;
-}
-
-.admin-header {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #2a2a30;
-}
-
-.admin-header h1 {
-  color: #f5f5f5 !important;
-  font-size: 28px;
-  margin: 0;
-}
-
-.admin-header p {
-  color: #a8a8a8 !important;
-  margin-top: 6px;
-}
-
-.dashboard-admin div,
-.admin-card {
-  background: #151518 !important;
-  border: 1px solid #2a2a30 !important;
-  color: #f5f5f5 !important;
-  box-shadow: none !important;
-}
-
-.admin-card h2,
-.admin-lista-topo h2 {
-  color: #f5f5f5 !important;
-}
-
-.admin-lista-topo span,
-.subtitulo-admin,
-.texto-vazio-admin {
-  color: #a8a8a8 !important;
-}
-
-.form-admin input,
-.form-variacao-admin select,
-.campo-busca-admin {
-  background: #1d1d22 !important;
-  border: 1px solid #2a2a30 !important;
-  color: #f5f5f5 !important;
-}
-
-.form-admin input::placeholder,
-.campo-busca-admin::placeholder {
-  color: #8b8b93;
-}
-
-.form-admin input:focus,
-.form-variacao-admin select:focus,
-.campo-busca-admin:focus {
-  background: #202027 !important;
-  border-color: #1f6feb !important;
-  outline: none;
-}
-
-.checkbox-admin {
-  color: #a8a8a8 !important;
-}
-
-.form-admin button {
-  background: #1f6feb !important;
-  color: white !important;
-}
-
-.form-admin button:hover {
-  background: #d71920 !important;
-}
-
-.botao-cancelar-edicao {
-  background: #1d1d22 !important;
-  color: #f5f5f5 !important;
-  border: 1px solid #2a2a30 !important;
-}
-
-.variacao-admin-item {
-  background: #1d1d22 !important;
-  border: 1px solid #2a2a30 !important;
-}
-
-.variacao-preview strong {
-  color: #f5f5f5 !important;
-}
-
-.variacao-preview small {
-  color: #a8a8a8 !important;
-}
-
-.variacao-admin-item button,
-.variacao-admin-item .perigo {
-  background: #d71920 !important;
-  color: white !important;
-}
-
-.lista-admin {
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-}
-
-.produto-admin {
-  background: #151518 !important;
-  border: 1px solid #2a2a30 !important;
-}
-
-.info-produto-admin strong {
-  color: #f5f5f5 !important;
-}
-
-.meta-produto-admin span {
-  background: #1d1d22 !important;
-  color: #a8a8a8 !important;
-}
-
-.preview-imagem-admin {
-  background: #1d1d22 !important;
-  border: 1px solid #2a2a30 !important;
-}
-
-.preview-imagem-admin span {
-  color: #a8a8a8 !important;
-}
-
-.rodape-produto {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.rodape-produto p {
-  color: #ff2d35;
-  font-size: 17px;
-  letter-spacing: -0.5px;
-}
-
-.botao-sacola {
-  background: #ffffff;
-  color: #111;
-  width: 46px;
-  height: 36px;
-  min-height: 36px;
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.08);
-}
-
-.botao-sacola:hover {
-  background: var(--vermelho);
-  color: white;
-}
-
-.card-produto.esgotado .botao-sacola {
-  background: #555;
-  cursor: not-allowed;
-}
-@media (max-width: 750px) {
-  .card-produto {
-    height: 315px;
-  }
-
-  .imagem-produto {
-    aspect-ratio: 1 / 1;
-    height: auto;
-    min-height: 0;
-  }
-
-  .rodape-produto p {
-    font-size: 15px;
-  }
-
-  .botao-sacola {
-    width: 40px;
-    height: 34px;
-    min-height: 34px;
   }
 }
