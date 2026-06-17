@@ -884,8 +884,8 @@ main {
 }
 
 .bolinha-variacao {
-  width: 22px;
-  height: 22px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
