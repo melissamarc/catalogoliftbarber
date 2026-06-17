@@ -899,3 +899,136 @@ main {
     height: 120px;
   }
 }
+
+/* ADMIN ESCURO BONITO - COLAR NO FINAL */
+
+.admin {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 18px;
+  background: #0b0b0d !important;
+  color: #f5f5f5 !important;
+  min-height: 100vh;
+}
+
+.admin-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2a2a30;
+}
+
+.admin-header h1 {
+  color: #f5f5f5 !important;
+  font-size: 28px;
+  margin: 0;
+}
+
+.admin-header p {
+  color: #a8a8a8 !important;
+  margin-top: 6px;
+}
+
+.dashboard-admin div,
+.admin-card {
+  background: #151518 !important;
+  border: 1px solid #2a2a30 !important;
+  color: #f5f5f5 !important;
+  box-shadow: none !important;
+}
+
+.admin-card h2,
+.admin-lista-topo h2 {
+  color: #f5f5f5 !important;
+}
+
+.admin-lista-topo span,
+.subtitulo-admin,
+.texto-vazio-admin {
+  color: #a8a8a8 !important;
+}
+
+.form-admin input,
+.form-variacao-admin select,
+.campo-busca-admin {
+  background: #1d1d22 !important;
+  border: 1px solid #2a2a30 !important;
+  color: #f5f5f5 !important;
+}
+
+.form-admin input::placeholder,
+.campo-busca-admin::placeholder {
+  color: #8b8b93;
+}
+
+.form-admin input:focus,
+.form-variacao-admin select:focus,
+.campo-busca-admin:focus {
+  background: #202027 !important;
+  border-color: #1f6feb !important;
+  outline: none;
+}
+
+.checkbox-admin {
+  color: #a8a8a8 !important;
+}
+
+.form-admin button {
+  background: #1f6feb !important;
+  color: white !important;
+}
+
+.form-admin button:hover {
+  background: #d71920 !important;
+}
+
+.botao-cancelar-edicao {
+  background: #1d1d22 !important;
+  color: #f5f5f5 !important;
+  border: 1px solid #2a2a30 !important;
+}
+
+.variacao-admin-item {
+  background: #1d1d22 !important;
+  border: 1px solid #2a2a30 !important;
+}
+
+.variacao-preview strong {
+  color: #f5f5f5 !important;
+}
+
+.variacao-preview small {
+  color: #a8a8a8 !important;
+}
+
+.variacao-admin-item button,
+.variacao-admin-item .perigo {
+  background: #d71920 !important;
+  color: white !important;
+}
+
+.lista-admin {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+.produto-admin {
+  background: #151518 !important;
+  border: 1px solid #2a2a30 !important;
+}
+
+.info-produto-admin strong {
+  color: #f5f5f5 !important;
+}
+
+.meta-produto-admin span {
+  background: #1d1d22 !important;
+  color: #a8a8a8 !important;
+}
+
+.preview-imagem-admin {
+  background: #1d1d22 !important;
+  border: 1px solid #2a2a30 !important;
+}
+
+.preview-imagem-admin span {
+  color: #a8a8a8 !important;
+}

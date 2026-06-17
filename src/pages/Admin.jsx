@@ -34,13 +34,6 @@ function Admin() {
 
   const [buscaProduto, setBuscaProduto] = useState("");
 
-  useEffect(() => {
-    document.body.classList.add("tema-claro");
-
-    return () => {
-      document.body.classList.remove("tema-claro");
-    };
-  }, []);
 
   useEffect(() => {
     carregarProdutos();
