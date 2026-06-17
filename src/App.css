@@ -706,3 +706,20 @@ main {
     padding: 10px 14px;
   }
 }
+
+.card-produto.esgotado {
+  opacity: 0.65;
+  transform: scale(0.98);
+}
+
+.card-produto.esgotado .imagem-produto img {
+  filter: grayscale(100%);
+}
+
+.card-produto.esgotado::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.08);
+  border-radius: 18px;
+}
