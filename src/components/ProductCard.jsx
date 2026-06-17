@@ -18,13 +18,8 @@ function ProductCard({ produto, adicionarAoCarrinho }) {
   );
 
   const imagemProduto = useMemo(() => {
-    if (corSelecionada?.imagem_url) {
-      return corSelecionada.imagem_url;
-    }
-
-    if (textoSelecionado?.imagem_url) {
-      return textoSelecionado.imagem_url;
-    }
+    if (corSelecionada?.imagem_url) return corSelecionada.imagem_url;
+    if (textoSelecionado?.imagem_url) return textoSelecionado.imagem_url;
 
     return produto.imagem_url || "/sem-imagem.png";
   }, [produto.imagem_url, corSelecionada, textoSelecionado]);
@@ -32,13 +27,8 @@ function ProductCard({ produto, adicionarAoCarrinho }) {
   function handleAdicionar() {
     const variacoesSelecionadas = [];
 
-    if (corSelecionada) {
-      variacoesSelecionadas.push(corSelecionada);
-    }
-
-    if (textoSelecionado) {
-      variacoesSelecionadas.push(textoSelecionado);
-    }
+    if (corSelecionada) variacoesSelecionadas.push(corSelecionada);
+    if (textoSelecionado) variacoesSelecionadas.push(textoSelecionado);
 
     adicionarAoCarrinho(produto, variacoesSelecionadas);
   }
@@ -53,51 +43,60 @@ function ProductCard({ produto, adicionarAoCarrinho }) {
             e.target.src = "/sem-imagem.png";
           }}
         />
+
+        {produto.esgotado && <span className="selo">Esgotado</span>}
       </div>
 
-      {produto.esgotado && <span className="selo">Esgotado</span>}
+      <div className="conteudo-produto">
+        <h2>{produto.nome}</h2>
 
-      <h2>{produto.nome}</h2>
+        {variacoesCor?.length > 0 && (
+          <div className="variacoes-produto">
+            {variacoesCor.map((variacao) => (
+              <button
+                key={variacao.id}
+                type="button"
+                className={`bolinha-variacao ${
+                  corSelecionada?.id === variacao.id ? "selecionada" : ""
+                }`}
+                style={{ background: variacao.valor }}
+                title={variacao.nome}
+                onClick={() => setCorSelecionada(variacao)}
+              />
+            ))}
+          </div>
+        )}
 
-      {variacoesCor?.length > 0 && (
-        <div className="variacoes-produto">
-          {variacoesCor.map((variacao) => (
-            <button
-              key={variacao.id}
-              type="button"
-              className={`bolinha-variacao ${
-                corSelecionada?.id === variacao.id ? "selecionada" : ""
-              }`}
-              style={{ background: variacao.valor }}
-              title={variacao.nome}
-              onClick={() => setCorSelecionada(variacao)}
-            />
-          ))}
+        {variacoesTexto?.length > 0 && (
+          <div className="variacoes-texto-produto">
+            {variacoesTexto.map((variacao) => (
+              <button
+                key={variacao.id}
+                type="button"
+                className={
+                  textoSelecionado?.id === variacao.id ? "selecionada" : ""
+                }
+                onClick={() => setTextoSelecionado(variacao)}
+              >
+                {variacao.nome}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="rodape-produto">
+          <p>R$ {Number(produto.preco).toFixed(2).replace(".", ",")}</p>
+
+          <button
+            className="botao-sacola"
+            disabled={produto.esgotado}
+            onClick={handleAdicionar}
+            title={produto.esgotado ? "Indisponível" : "Adicionar ao carrinho"}
+          >
+            🛍️+
+          </button>
         </div>
-      )}
-
-      {variacoesTexto?.length > 0 && (
-        <div className="variacoes-texto-produto">
-          {variacoesTexto.map((variacao) => (
-            <button
-              key={variacao.id}
-              type="button"
-              className={
-                textoSelecionado?.id === variacao.id ? "selecionada" : ""
-              }
-              onClick={() => setTextoSelecionado(variacao)}
-            >
-              {variacao.nome}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <p>R$ {Number(produto.preco).toFixed(2).replace(".", ",")}</p>
-
-      <button disabled={produto.esgotado} onClick={handleAdicionar}>
-        {produto.esgotado ? "Indisponível" : "Adicionar"}
-      </button>
+      </div>
     </div>
   );
 }
