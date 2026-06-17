@@ -5,12 +5,17 @@ import {
   listarProdutosAdmin,
   atualizarProduto,
   excluirProduto,
+  listarVariacoes,
+  cadastrarVariacao,
+  excluirVariacao,
 } from "../services/adminProdutoService";
 
 function Admin() {
   const [produtos, setProdutos] = useState([]);
 
   const [produtoEditando, setProdutoEditando] = useState(null);
+  const [produtoVariacao, setProdutoVariacao] = useState(null);
+  const [variacoes, setVariacoes] = useState([]);
 
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
@@ -20,6 +25,12 @@ function Admin() {
   const [imagemAtual, setImagemAtual] = useState("");
   const [esgotado, setEsgotado] = useState(false);
   const [carregando, setCarregando] = useState(false);
+
+  const [variacaoNome, setVariacaoNome] = useState("");
+  const [variacaoTipo, setVariacaoTipo] = useState("cor");
+  const [variacaoValor, setVariacaoValor] = useState("#000000");
+  const [variacaoImagem, setVariacaoImagem] = useState(null);
+  const [carregandoVariacao, setCarregandoVariacao] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("tema-claro");
@@ -61,6 +72,29 @@ function Admin() {
     setEsgotado(Boolean(produto.esgotado));
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function abrirVariacoes(produto) {
+    setProdutoVariacao(produto);
+
+    const dados = await listarVariacoes(produto.id);
+    setVariacoes(dados);
+
+    setVariacaoNome("");
+    setVariacaoTipo("cor");
+    setVariacaoValor("#000000");
+    setVariacaoImagem(null);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function fecharVariacoes() {
+    setProdutoVariacao(null);
+    setVariacoes([]);
+    setVariacaoNome("");
+    setVariacaoTipo("cor");
+    setVariacaoValor("#000000");
+    setVariacaoImagem(null);
   }
 
   async function handleSubmit(e) {
@@ -107,6 +141,60 @@ function Admin() {
     setCarregando(false);
   }
 
+  async function handleSubmitVariacao(e) {
+    e.preventDefault();
+
+    if (!produtoVariacao) return;
+
+    setCarregandoVariacao(true);
+
+    let imagemUrl = null;
+
+    if (variacaoImagem) {
+      imagemUrl = await enviarImagem(variacaoImagem);
+    }
+
+    const novaVariacao = {
+      produto_id: produtoVariacao.id,
+      nome: variacaoNome,
+      tipo: variacaoTipo,
+      valor: variacaoValor,
+      imagem_url: imagemUrl,
+      ativo: true,
+    };
+
+    const resultado = await cadastrarVariacao(novaVariacao);
+
+    if (resultado) {
+      const dados = await listarVariacoes(produtoVariacao.id);
+      setVariacoes(dados);
+
+      setVariacaoNome("");
+      setVariacaoTipo("cor");
+      setVariacaoValor("#000000");
+      setVariacaoImagem(null);
+
+      alert("Variação cadastrada com sucesso!");
+    } else {
+      alert("Erro ao cadastrar variação");
+    }
+
+    setCarregandoVariacao(false);
+  }
+
+  async function removerVariacao(variacao) {
+    const confirmar = confirm(`Excluir a variação "${variacao.nome}"?`);
+
+    if (!confirmar) return;
+
+    const excluiu = await excluirVariacao(variacao.id);
+
+    if (excluiu && produtoVariacao) {
+      const dados = await listarVariacoes(produtoVariacao.id);
+      setVariacoes(dados);
+    }
+  }
+
   async function alternarEsgotado(produto) {
     await atualizarProduto(produto.id, {
       esgotado: !produto.esgotado,
@@ -127,6 +215,10 @@ function Admin() {
     if (excluiu) {
       if (produtoEditando?.id === produto.id) {
         limparFormulario();
+      }
+
+      if (produtoVariacao?.id === produto.id) {
+        fecharVariacoes();
       }
 
       carregarProdutos();
@@ -152,7 +244,7 @@ function Admin() {
       <header className="admin-header">
         <div>
           <h1>Painel Admin</h1>
-          <p>Gerencie produtos, preços, imagens, marcas e disponibilidade.</p>
+          <p>Gerencie produtos, variações, imagens, preços e disponibilidade.</p>
         </div>
       </header>
 
@@ -177,6 +269,109 @@ function Admin() {
           <span>Categorias</span>
         </div>
       </section>
+
+      {produtoVariacao && (
+        <section className="admin-card variacoes-admin-card">
+          <div className="admin-lista-topo">
+            <div>
+              <h2>Variações</h2>
+              <p className="subtitulo-admin">{produtoVariacao.nome}</p>
+            </div>
+
+            <button
+              type="button"
+              className="botao-cancelar-edicao"
+              onClick={fecharVariacoes}
+            >
+              Fechar
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmitVariacao} className="form-admin form-variacao-admin">
+            <input
+              type="text"
+              placeholder="Nome da variação. Ex: Preto, Azul, 110V"
+              value={variacaoNome}
+              onChange={(e) => setVariacaoNome(e.target.value)}
+              required
+            />
+
+            <select
+              value={variacaoTipo}
+              onChange={(e) => {
+                setVariacaoTipo(e.target.value);
+                setVariacaoValor(e.target.value === "cor" ? "#000000" : "");
+              }}
+            >
+              <option value="cor">Cor</option>
+              <option value="texto">Texto / Voltagem / Tamanho</option>
+            </select>
+
+            {variacaoTipo === "cor" ? (
+              <input
+                type="color"
+                value={variacaoValor}
+                onChange={(e) => setVariacaoValor(e.target.value)}
+              />
+            ) : (
+              <input
+                type="text"
+                placeholder="Valor. Ex: 110V, 220V, P, M, G"
+                value={variacaoValor}
+                onChange={(e) => setVariacaoValor(e.target.value)}
+                required
+              />
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setVariacaoImagem(e.target.files[0])}
+            />
+
+            <button type="submit" disabled={carregandoVariacao}>
+              {carregandoVariacao ? "Salvando..." : "Adicionar variação"}
+            </button>
+          </form>
+
+          <div className="lista-variacoes-admin">
+            {variacoes.length === 0 ? (
+              <p className="texto-vazio-admin">Nenhuma variação cadastrada.</p>
+            ) : (
+              variacoes.map((variacao) => (
+                <div className="variacao-admin-item" key={variacao.id}>
+                  <div className="variacao-preview">
+                    {variacao.tipo === "cor" ? (
+                      <span
+                        className="bolinha-cor-admin"
+                        style={{ background: variacao.valor }}
+                      />
+                    ) : (
+                      <span className="tag-texto-admin">{variacao.valor}</span>
+                    )}
+
+                    <div>
+                      <strong>{variacao.nome}</strong>
+                      <small>{variacao.tipo}</small>
+                    </div>
+                  </div>
+
+                  {variacao.imagem_url && (
+                    <img src={variacao.imagem_url} alt={variacao.nome} />
+                  )}
+
+                  <button
+                    className="perigo"
+                    onClick={() => removerVariacao(variacao)}
+                  >
+                    Excluir
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+      )}
 
       <section className="admin-card">
         <div className="admin-lista-topo">
@@ -291,6 +486,10 @@ function Admin() {
 
               <div className="acoes-admin">
                 <button onClick={() => iniciarEdicao(produto)}>Editar</button>
+
+                <button onClick={() => abrirVariacoes(produto)}>
+                  Variações
+                </button>
 
                 <button onClick={() => alternarEsgotado(produto)}>
                   {produto.esgotado ? "Disponível" : "Esgotar"}
