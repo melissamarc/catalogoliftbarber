@@ -66,46 +66,34 @@ function Cart({
                   />
 
                   <div className="item-carrinho-info">
-                    <div className="item-carrinho-topo">
-                      <strong>{item.nome}</strong>
+                   <div className="item-carrinho-topo">
+  <strong>{item.nome}</strong>
 
-                      <button
-                        className="remover-item"
-                        onClick={() => removerDoCarrinho(item.itemCarrinhoId)}
-                      >
-                        ×
-                      </button>
-                    </div>
+  <button
+    className="remover-item"
+    onClick={() => removerDoCarrinho(item.itemCarrinhoId)}
+  >
+    ×
+  </button>
+</div>
 
-                    {item.variacoesSelecionadas?.length > 0 && (
-                      <div className="variacoes-carrinho">
-                        {item.variacoesSelecionadas.map((variacao) => (
-                          <span key={variacao.id}>{variacao.nome}</span>
-                        ))}
-                      </div>
-                    )}
+{item.variacoesSelecionadas?.length > 0 && (
+  <div className="variacoes-carrinho">
+    {item.variacoesSelecionadas.map((variacao) => (
+      <span key={variacao.id}>{variacao.nome}</span>
+    ))}
+  </div>
+)}
 
-                    <p>
-                      R$ {(item.preco * item.quantidade)
-                        .toFixed(2)
-                        .replace(".", ",")}
-                    </p>
+<p>
+  R$ {(item.preco * item.quantidade)
+    .toFixed(2)
+    .replace(".", ",")}
+</p>
 
-                    <div className="controles">
-                      <button
-                        onClick={() => diminuirQuantidade(item.itemCarrinhoId)}
-                      >
-                        -
-                      </button>
-
-                      <span>{item.quantidade}</span>
-
-                      <button
-                        onClick={() => aumentarQuantidade(item.itemCarrinhoId)}
-                      >
-                        +
-                      </button>
-                    </div>
+<div className="controles">
+  ...
+</div>
                   </div>
                 </div>
               );
