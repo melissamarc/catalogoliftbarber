@@ -2,24 +2,29 @@
 
 :root {
   --fundo: #0b0b0d;
-  --card: #151518;
+  --card: linear-gradient(
+    180deg,
+    #13151c 0%,
+    #090b12 100%
+  );
   --card2: #1d1d22;
   --texto: #f5f5f5;
   --texto-suave: #a8a8a8;
-  --vermelho: #ff2d35;
-  --azul: #1f6feb;
-  --borda: #2a2a30;
+  --borda: #262b36;
 }
 
 body.tema-claro {
   --fundo: #f5f5f5;
-  --card: #ffffff;
-  --card2: #eeeeee;
-  --texto: #111111;
-  --texto-suave: #666666;
-  --borda: #dddddd;
-}
 
+  --card: #ffffff;
+
+  --card2: #f3f4f6;
+
+  --texto: #111827;
+  --texto-suave: #6b7280;
+
+  --borda: #e5e7eb;
+}
 * {
   box-sizing: border-box;
 }
@@ -171,7 +176,7 @@ main {
 
 .card-produto {
   position: relative;
-  background: #111318;
+   background: var(--card);
 border: 1px solid #242831;
   border-radius: 26px;
   padding: 12px;
