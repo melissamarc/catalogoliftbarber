@@ -10,26 +10,35 @@ function Cart({
   vendedorSelecionado,
   setVendedorSelecionado,
 }) {
+  const quantidadeItens = carrinho.reduce(
+    (soma, item) => soma + item.quantidade,
+    0
+  );
+
   return (
     <section className="carrinho">
-      <h2>Carrinho</h2>
+      <div className="carrinho-topo">
+        <div>
+          <h2>Carrinho</h2>
+          <span>{quantidadeItens} item(ns)</span>
+        </div>
+      </div>
 
       <div className="seletor-vendedor">
-        <label>Escolha o vendedor</label>
+        <label>Escolha seu vendedor</label>
 
         <select
-         value={vendedorSelecionado?.nome || ""}
+          value={vendedorSelecionado?.nome || ""}
           onChange={(e) => {
             const vendedor = vendedores.find(
               (item) => item.nome === e.target.value
             );
 
-            setVendedorSelecionado(vendedor);
+            setVendedorSelecionado(vendedor || null);
           }}
         >
-          <option value="">
-  Selecione seu vendedor
-</option>
+          <option value="">Selecione um vendedor</option>
+
           {vendedores.map((vendedor) => (
             <option key={vendedor.nome} value={vendedor.nome}>
               {vendedor.nome}
@@ -39,72 +48,106 @@ function Cart({
       </div>
 
       {carrinho.length === 0 ? (
-        <p>Seu carrinho está vazio.</p>
+        <p className="carrinho-vazio">Seu carrinho está vazio.</p>
       ) : (
         <>
-          {carrinho.map((item) => (
-            <div className="item-carrinho" key={item.itemCarrinhoId}>
-              <div>
-                <strong>{item.nome}</strong>
+          <div className="lista-carrinho">
+            {carrinho.map((item) => {
+              const imagemProduto = item.imagem_url || "/sem-imagem.png";
 
-                {item.variacoesSelecionadas?.length > 0 && (
-                  <div className="variacoes-carrinho">
-                    {item.variacoesSelecionadas.map((variacao) => (
-                      <span key={variacao.id}>{variacao.nome}</span>
-                    ))}
+              return (
+                <div className="item-carrinho" key={item.itemCarrinhoId}>
+                  <img
+                    src={imagemProduto}
+                    alt={item.nome}
+                    onError={(e) => {
+                      e.target.src = "/sem-imagem.png";
+                    }}
+                  />
+
+                  <div className="item-carrinho-info">
+                    <div className="item-carrinho-topo">
+                      <strong>{item.nome}</strong>
+
+                      <button
+                        className="remover-item"
+                        onClick={() => removerDoCarrinho(item.itemCarrinhoId)}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    {item.variacoesSelecionadas?.length > 0 && (
+                      <div className="variacoes-carrinho">
+                        {item.variacoesSelecionadas.map((variacao) => (
+                          <span key={variacao.id}>{variacao.nome}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    <p>
+                      R$ {(item.preco * item.quantidade)
+                        .toFixed(2)
+                        .replace(".", ",")}
+                    </p>
+
+                    <div className="controles">
+                      <button
+                        onClick={() => diminuirQuantidade(item.itemCarrinhoId)}
+                      >
+                        -
+                      </button>
+
+                      <span>{item.quantidade}</span>
+
+                      <button
+                        onClick={() => aumentarQuantidade(item.itemCarrinhoId)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                )}
+                </div>
+              );
+            })}
+          </div>
 
-                <p>
-                  R$ {(item.preco * item.quantidade)
-                    .toFixed(2)
-                    .replace(".", ",")}
-                </p>
-              </div>
-
-              <div className="controles">
-                <button
-                  onClick={() => diminuirQuantidade(item.itemCarrinhoId)}
-                >
-                  -
-                </button>
-
-                <span>{item.quantidade}</span>
-
-                <button
-                  onClick={() => aumentarQuantidade(item.itemCarrinhoId)}
-                >
-                  +
-                </button>
-
-                <button onClick={() => removerDoCarrinho(item.itemCarrinhoId)}>
-                  Remover
-                </button>
-              </div>
+          <div className="resumo-pedido">
+            <div>
+              <span>Subtotal</span>
+              <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
             </div>
-          ))}
 
-          <h3>Total: R$ {total.toFixed(2).replace(".", ",")}</h3>
+            <div>
+              <span>Itens</span>
+              <strong>{quantidadeItens}</strong>
+            </div>
+
+            <div className="linha-total">
+              <span>Total</span>
+              <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
+            </div>
+          </div>
 
           <button className="botao-limpar" onClick={limparCarrinho}>
             Limpar carrinho
           </button>
 
           <a
-  className={`botao-whatsapp ${
-    !vendedorSelecionado ? "desabilitado" : ""
-  }`}
-  href={vendedorSelecionado ? linkWhatsapp : "#"}
-  target="_blank"
-  onClick={(e) => {
-    if (!vendedorSelecionado) {
-      e.preventDefault();
-      alert("Selecione um vendedor antes de enviar o pedido.");
-    }
-  }}
->
-  Enviar pedido pelo WhatsApp
-</a>
+            className={`botao-whatsapp ${
+              !vendedorSelecionado ? "desabilitado" : ""
+            }`}
+            href={vendedorSelecionado ? linkWhatsapp : "#"}
+            target="_blank"
+            onClick={(e) => {
+              if (!vendedorSelecionado) {
+                e.preventDefault();
+                alert("Selecione um vendedor antes de enviar o pedido.");
+              }
+            }}
+          >
+            Enviar pedido pelo WhatsApp
+          </a>
         </>
       )}
     </section>

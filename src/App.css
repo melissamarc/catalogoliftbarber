@@ -344,7 +344,7 @@ border: 1px solid #242831;
   cursor: not-allowed;
 }
 
-/* CARRINHO */
+/* CARRINHO PREMIUM */
 
 .overlay-carrinho {
   position: fixed;
@@ -356,13 +356,13 @@ border: 1px solid #242831;
 }
 
 .gaveta-carrinho {
-  width: 400px;
-  max-width: 92%;
+  width: 430px;
+  max-width: 94%;
   height: 100vh;
-  background: var(--fundo);
-  padding: 24px;
+  background: #0f1014;
+  padding: 18px;
   overflow-y: auto;
-  border-left: 1px solid var(--borda);
+  border-left: 1px solid #252832;
   position: relative;
 }
 
@@ -370,9 +370,9 @@ border: 1px solid #242831;
   position: absolute;
   top: 16px;
   right: 18px;
-  border: 1px solid var(--borda);
-  background: var(--card);
-  color: var(--texto);
+  border: 1px solid #2a2a30;
+  background: #1d1d22;
+  color: #f5f5f5;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -381,55 +381,235 @@ border: 1px solid #242831;
 }
 
 .carrinho {
-  background: var(--card);
-  border: 1px solid var(--borda);
-  border-radius: 18px;
+  margin-top: 42px;
+  display: grid;
+  gap: 14px;
+}
+
+.carrinho-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carrinho-topo h2 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.carrinho-topo span {
+  color: #a8a8a8;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.carrinho-vazio {
+  background: #151518;
+  border: 1px solid #2a2a30;
+  color: #a8a8a8;
   padding: 18px;
-  margin-top: 34px;
+  border-radius: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.seletor-vendedor {
+  display: grid;
+  gap: 8px;
+  background: #151518;
+  border: 1px solid #2a2a30;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.seletor-vendedor label {
+  color: #f5f5f5;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.seletor-vendedor select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid #2a2a30;
+  background: #1d1d22;
+  color: #f5f5f5;
+  font-weight: 800;
+  outline: none;
+}
+
+.lista-carrinho {
+  display: grid;
+  gap: 12px;
 }
 
 .item-carrinho {
-  border-bottom: 1px solid var(--borda);
-  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  background: #151518;
+  border: 1px solid #2a2a30;
+  border-radius: 20px;
+  padding: 10px;
 }
 
-.item-carrinho strong,
-.carrinho h2,
-.carrinho h3,
-.controles span {
-  color: var(--texto);
+.item-carrinho img {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+  background: #f4f4f4;
+  border-radius: 16px;
+  padding: 7px;
+}
+
+.item-carrinho-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-carrinho-topo {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.item-carrinho strong {
+  color: #f5f5f5;
+  font-size: 13px;
   font-weight: 900;
+  line-height: 1.2;
+}
+
+.remover-item {
+  border: none;
+  background: transparent;
+  color: #a8a8a8;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.remover-item:hover {
+  color: var(--vermelho);
 }
 
 .item-carrinho p {
-  color: var(--vermelho);
+  margin: auto 0 8px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.variacoes-carrinho {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 6px 0 8px;
+}
+
+.variacoes-carrinho span {
+  background: #1d1d22;
+  color: #a8a8a8;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: 10px;
   font-weight: 900;
 }
 
 .controles {
+  width: fit-content;
   display: flex;
   align-items: center;
   gap: 8px;
+  background: #1d1d22;
+  border: 1px solid #2a2a30;
+  border-radius: 999px;
+  padding: 4px;
 }
 
-.controles button,
-.botao-limpar {
+.controles button {
+  width: 28px;
+  height: 28px;
   border: none;
-  border-radius: 999px;
-  background: var(--card2);
-  color: var(--texto);
+  border-radius: 50%;
+  background: #252832;
+  color: #f5f5f5;
   font-weight: 900;
   cursor: pointer;
 }
 
-.controles button {
-  padding: 7px 10px;
+.controles button:hover {
+  background: var(--azul);
+}
+
+.controles span {
+  min-width: 18px;
+  text-align: center;
+  color: #f5f5f5;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.resumo-pedido {
+  background: #f5f5f5;
+  color: #111;
+  border-radius: 22px;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.resumo-pedido div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resumo-pedido span {
+  color: #666;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.resumo-pedido strong {
+  color: #111;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.resumo-pedido .linha-total {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px dashed #cfcfcf;
+}
+
+.resumo-pedido .linha-total span,
+.resumo-pedido .linha-total strong {
+  color: #111;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .botao-limpar {
   width: 100%;
-  padding: 12px;
-  margin: 12px 0;
+  border: none;
+  padding: 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: #1d1d22;
+  color: #f5f5f5;
+  font-weight: 900;
+}
+
+.botao-limpar:hover {
+  background: #252832;
 }
 
 .botao-whatsapp {
@@ -438,49 +618,18 @@ border: 1px solid #242831;
   background: #25d366;
   color: white;
   text-decoration: none;
-  padding: 14px;
+  padding: 15px;
   border-radius: 999px;
   font-weight: 900;
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.18);
 }
 
-.seletor-vendedor {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 16px;
+.botao-whatsapp.desabilitado {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
 }
-
-.seletor-vendedor label {
-  color: var(--texto-suave);
-  font-weight: 800;
-  font-size: 13px;
-}
-
-.seletor-vendedor select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid var(--borda);
-  background: var(--card2);
-  color: var(--texto);
-  font-weight: 900;
-}
-
-.variacoes-carrinho {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.variacoes-carrinho span {
-  background: var(--card2);
-  color: var(--texto);
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 900;
-}
-
 /* ADMIN COMPACTO ESCURO */
 
 .admin {
