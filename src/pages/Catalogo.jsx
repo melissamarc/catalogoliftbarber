@@ -120,7 +120,7 @@ function Catalogo() {
       setCarrinho([...carrinho, { ...produtoCarrinho, quantidade: 1 }]);
     }
 
-    mostrarToast(`${produto.nome} foi adicionado ao carrinho`);
+   mostrarToast(`✓ ${produto.nome}`);
   }
 
   function aumentarQuantidade(itemCarrinhoId) {
@@ -203,7 +203,12 @@ Total: R$ ${total.toFixed(2).replace(".", ",")}`
 
   return (
     <main>
-      {mensagemToast && <div className="toast">{mensagemToast}</div>}
+     {mensagemToast && (
+  <div className="toast">
+    <span>✓ Adicionado ao carrinho</span>
+    <strong>{mensagemToast}</strong>
+  </div>
+)}
 
       <header className="cabecalho">
         <div className="logo-area">
