@@ -18,17 +18,17 @@ function Catalogo() {
   const [marcaSelecionada, setMarcaSelecionada] = useState("Todas");
   const [busca, setBusca] = useState("");
   const [carrinhoAberto, setCarrinhoAberto] = useState(false);
-  const [vendedorSelecionado, setVendedorSelecionado] = useState(vendedores[0]);
+  const [vendedorSelecionado, setVendedorSelecionado] = useState(null);
   const [mensagemToast, setMensagemToast] = useState("");
+
+  const [temaEscuro, setTemaEscuro] = useState(() => {
+    const temaSalvo = localStorage.getItem("tema");
+    return temaSalvo ? temaSalvo === "escuro" : true;
+  });
 
   const [carrinho, setCarrinho] = useState(() => {
     const carrinhoSalvo = localStorage.getItem("carrinho");
-
-    if (carrinhoSalvo) {
-      return JSON.parse(carrinhoSalvo);
-    }
-
-    return [];
+    return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
   });
 
   useEffect(() => {
@@ -43,6 +43,11 @@ function Catalogo() {
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
+
+  useEffect(() => {
+    document.body.classList.toggle("tema-claro", !temaEscuro);
+    localStorage.setItem("tema", temaEscuro ? "escuro" : "claro");
+  }, [temaEscuro]);
 
   const categorias = [
     "Todos",
@@ -86,22 +91,39 @@ function Catalogo() {
   }
 
   function adicionarAoCarrinho(produto, variacoesSelecionadas = []) {
-  const variacaoKey = variacoesSelecionadas
-    .map((variacao) => variacao.id)
-    .sort()
-    .join("-");
+    const variacaoKey = variacoesSelecionadas
+      .map((variacao) => variacao.id)
+      .sort()
+      .join("-");
 
-  const itemCarrinhoId = `${produto.id}-${variacaoKey || "sem-variacao"}`;
+    const itemCarrinhoId = `${produto.id}-${variacaoKey || "sem-variacao"}`;
 
-  const produtoExiste = carrinho.find((item) => item.itemCarrinhoId === itemCarrinhoId);
+    const produtoExiste = carrinho.find(
+      (item) => item.itemCarrinhoId === itemCarrinhoId
+    );
 
-  const produtoCarrinho = {
-    ...produto,
-    itemCarrinhoId,
-    variacoesSelecionadas,
-  };
+    const produtoCarrinho = {
+      ...produto,
+      itemCarrinhoId,
+      variacoesSelecionadas,
+    };
 
-  if (produtoExiste) {
+    if (produtoExiste) {
+      setCarrinho(
+        carrinho.map((item) =>
+          item.itemCarrinhoId === itemCarrinhoId
+            ? { ...item, quantidade: item.quantidade + 1 }
+            : item
+        )
+      );
+    } else {
+      setCarrinho([...carrinho, { ...produtoCarrinho, quantidade: 1 }]);
+    }
+
+    mostrarToast(`${produto.nome} foi adicionado ao carrinho`);
+  }
+
+  function aumentarQuantidade(itemCarrinhoId) {
     setCarrinho(
       carrinho.map((item) =>
         item.itemCarrinhoId === itemCarrinhoId
@@ -109,40 +131,25 @@ function Catalogo() {
           : item
       )
     );
-  } else {
-    setCarrinho([...carrinho, { ...produtoCarrinho, quantidade: 1 }]);
   }
 
-  mostrarToast(`${produto.nome} foi adicionado ao carrinho`);
-}
+  function diminuirQuantidade(itemCarrinhoId) {
+    setCarrinho(
+      carrinho
+        .map((item) =>
+          item.itemCarrinhoId === itemCarrinhoId
+            ? { ...item, quantidade: item.quantidade - 1 }
+            : item
+        )
+        .filter((item) => item.quantidade > 0)
+    );
+  }
 
-  function aumentarQuantidade(itemCarrinhoId) {
-  setCarrinho(
-    carrinho.map((item) =>
-      item.itemCarrinhoId === itemCarrinhoId
-        ? { ...item, quantidade: item.quantidade + 1 }
-        : item
-    )
-  );
-}
-
-function diminuirQuantidade(itemCarrinhoId) {
-  setCarrinho(
-    carrinho
-      .map((item) =>
-        item.itemCarrinhoId === itemCarrinhoId
-          ? { ...item, quantidade: item.quantidade - 1 }
-          : item
-      )
-      .filter((item) => item.quantidade > 0)
-  );
-}
-
-function removerDoCarrinho(itemCarrinhoId) {
-  setCarrinho(
-    carrinho.filter((item) => item.itemCarrinhoId !== itemCarrinhoId)
-  );
-}
+  function removerDoCarrinho(itemCarrinhoId) {
+    setCarrinho(
+      carrinho.filter((item) => item.itemCarrinhoId !== itemCarrinhoId)
+    );
+  }
 
   function limparCarrinho() {
     setCarrinho([]);
@@ -165,50 +172,34 @@ function removerDoCarrinho(itemCarrinhoId) {
   );
 
   const itensMensagem = carrinho
-  .map((item) => {
-    const variacoesTexto = item.variacoesSelecionadas?.length
-      ? `\nVariações: ${item.variacoesSelecionadas
-          .map((variacao) => variacao.nome)
-          .join(", ")}`
-      : "";
+    .map((item) => {
+      const variacoesTexto = item.variacoesSelecionadas?.length
+        ? `\nVariações: ${item.variacoesSelecionadas
+            .map((variacao) => variacao.nome)
+            .join(", ")}`
+        : "";
 
-    return `${item.quantidade}x ${item.nome}${variacoesTexto} - R$ ${(
-      item.preco * item.quantidade
-    )
-      .toFixed(2)
-      .replace(".", ",")}`;
-  })
-  .join("\n\n");
+      return `${item.quantidade}x ${item.nome}${variacoesTexto} - R$ ${(
+        item.preco * item.quantidade
+      )
+        .toFixed(2)
+        .replace(".", ",")}`;
+    })
+    .join("\n\n");
 
-  
-  const mensagemWhatsapp = `Olá, ${vendedorSelecionado.nome}! Gostaria de fazer esse pedido:
+  const mensagemWhatsapp = vendedorSelecionado
+    ? `Olá, ${vendedorSelecionado.nome}! Gostaria de fazer esse pedido:
 
 ${itensMensagem}
 
-Total: R$ ${total.toFixed(2).replace(".", ",")}`;
+Total: R$ ${total.toFixed(2).replace(".", ",")}`
+    : "";
 
-  const linkWhatsapp = `https://wa.me/${
-    vendedorSelecionado.telefone
-  }?text=${encodeURIComponent(mensagemWhatsapp)}`;
-
-  const [temaEscuro, setTemaEscuro] = useState(() => {
-  const temaSalvo = localStorage.getItem("tema");
-
-  if (temaSalvo) {
-    return temaSalvo === "escuro";
-  }
-
-  return true;
-});
-
-useEffect(() => {
-  document.body.classList.toggle("tema-claro", !temaEscuro);
-
-  localStorage.setItem(
-    "tema",
-    temaEscuro ? "escuro" : "claro"
-  );
-}, [temaEscuro]);
+  const linkWhatsapp = vendedorSelecionado
+    ? `https://wa.me/${
+        vendedorSelecionado.telefone
+      }?text=${encodeURIComponent(mensagemWhatsapp)}`
+    : "";
 
   return (
     <main>
@@ -224,22 +215,21 @@ useEffect(() => {
           </div>
         </div>
 
-       <div className="acoes-header">
-  <button
-    className="botao-tema"
-    onClick={() => setTemaEscuro(!temaEscuro)}
-  >
-    {temaEscuro ? "☀️" : "🌙"}
-  </button>
+        <div className="acoes-header">
+          <button
+            className="botao-tema"
+            onClick={() => setTemaEscuro(!temaEscuro)}
+          >
+            {temaEscuro ? "☀️" : "🌙"}
+          </button>
 
-  <button
-    className="icone-carrinho"
-    onClick={() => setCarrinhoAberto(true)}
-  >
-    🛒 {quantidadeItensCarrinho}
-  </button>
-</div>
-
+          <button
+            className="icone-carrinho"
+            onClick={() => setCarrinhoAberto(true)}
+          >
+            🛒 {quantidadeItensCarrinho}
+          </button>
+        </div>
       </header>
 
       <input

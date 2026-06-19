@@ -93,7 +93,22 @@ function ProductCard({ produto, adicionarAoCarrinho }) {
             onClick={handleAdicionar}
             title={produto.esgotado ? "Indisponível" : "Adicionar ao carrinho"}
           >
-            🛍️+
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M6 2L3 6V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V6L18 2H6Z" />
+              <path d="M3 6H21" />
+              <path d="M16 10C16 12.2 14.2 14 12 14C9.8 14 8 12.2 8 10" />
+              <path d="M12 17V21" />
+              <path d="M10 19H14" />
+            </svg>
           </button>
         </div>
       </div>

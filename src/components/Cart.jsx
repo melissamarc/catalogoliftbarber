@@ -18,7 +18,7 @@ function Cart({
         <label>Escolha o vendedor</label>
 
         <select
-          value={vendedorSelecionado.nome}
+         value={vendedorSelecionado?.nome || ""}
           onChange={(e) => {
             const vendedor = vendedores.find(
               (item) => item.nome === e.target.value
@@ -27,6 +27,9 @@ function Cart({
             setVendedorSelecionado(vendedor);
           }}
         >
+          <option value="">
+  Selecione seu vendedor
+</option>
           {vendedores.map((vendedor) => (
             <option key={vendedor.nome} value={vendedor.nome}>
               {vendedor.nome}
@@ -87,9 +90,21 @@ function Cart({
             Limpar carrinho
           </button>
 
-          <a className="botao-whatsapp" href={linkWhatsapp} target="_blank">
-            Enviar pedido pelo WhatsApp
-          </a>
+          <a
+  className={`botao-whatsapp ${
+    !vendedorSelecionado ? "desabilitado" : ""
+  }`}
+  href={vendedorSelecionado ? linkWhatsapp : "#"}
+  target="_blank"
+  onClick={(e) => {
+    if (!vendedorSelecionado) {
+      e.preventDefault();
+      alert("Selecione um vendedor antes de enviar o pedido.");
+    }
+  }}
+>
+  Enviar pedido pelo WhatsApp
+</a>
         </>
       )}
     </section>
