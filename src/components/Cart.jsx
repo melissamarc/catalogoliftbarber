@@ -91,9 +91,21 @@ function Cart({
     .replace(".", ",")}
 </p>
 
-<div className="controles">
-  ...
-</div>
+                    <div className="controles">
+                      <button
+                        onClick={() => diminuirQuantidade(item.itemCarrinhoId)}
+                      >
+                        -
+                      </button>
+
+                      <span>{item.quantidade}</span>
+
+                      <button
+                        onClick={() => aumentarQuantidade(item.itemCarrinhoId)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
